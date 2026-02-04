@@ -17,11 +17,44 @@ Rails.application.routes.draw do
 
   # Nested routes remain as you defined them
   
+     
+      post '/signup', to: "users#create"
+      post '/login', to: "users#login"
+      
+      post '/users', to: "users#create"
+      get '/users', to: "users#index"
+      get '/users/:id', to: "users#show"
+      patch '/users/:id', to: "users#update"
+      patch '/users', to: "users#update"
+      delete '/users/:id', to: "users#destroy"
 
-  resources :users do
-    resources :tickets
+      post '/tickets', to: "tickets#create"
+      get '/tickets', to: "tickets#index"
+      get '/tickets/:id', to: "tickets#show"
+      patch '/tickets/:id', to: "tickets#update"
+      delete '/tickets/:id', to: "tickets#destroy"
 
-    # resources :tickets, only: [:index]
+
+
+        
+      get '/open', to: "tickets#ticket_open"
+      get '/awaiting_approval', to: "tickets#ticket_awaiting_approval"
+      get '/ticket', to: "tickets#ticket_approved"
+      get '/inprogress', to: "tickets#ticket_in_progress"
+      get '/resolved', to: "tickets#ticket_resolved"
+      get '/closed', to: "tickets#ticket_closed"
+      post '/tickets', to: "tickets#create"
+      
+       
+
+      # resources :users do
+      #    resources :tickets
+
+   
+
+      
+
    
   end
-end
+
+

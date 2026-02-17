@@ -181,7 +181,8 @@ class TicketsController < ApplicationController
   end
 
   def set_agent
-   return render json: {error: "Agent access  only"}, status: :forbidden unless @current_user.agent?
+    pp"Agent access only"
+   return render json: {error: "Agent access only"}, status: :forbidden unless @current_user.agent?
   end
   
 

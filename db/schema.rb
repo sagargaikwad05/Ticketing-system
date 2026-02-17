@@ -10,23 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_30_085830) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_15_075532) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "tickets", force: :cascade do |t|
+    t.integer "agent_id"
     t.datetime "created_at", null: false
     t.text "description"
-    t.integer "status"
+    t.integer "priority"
+    t.integer "status", default: 0, null: false
     t.string "title"
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_tickets_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
+    t.boolean "is_active", default: true
+    t.boolean "is_deleted", default: false
     t.string "password_digest"
+    t.integer "role"
     t.datetime "updated_at", null: false
-    t.string "username"
+    t.string "user_name"
   end
 
   add_foreign_key "tickets", "users"

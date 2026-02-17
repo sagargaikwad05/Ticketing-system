@@ -1,23 +1,30 @@
 class User < ApplicationRecord
-  has_secure_password
- 
-  has_many :tickets
+    has_secure_password 
+     before_save :downcase_email
+     has_many :tickets
+     has_many :agents
 
-  validates :username, presence: true
-  # validates :email, presence: true, uniqueness: true
-  validate :set_email 
+    validates :user_name, presence: , if: :will_save_change_to_user_name?
+    enum :role, {user: 0, admin: 1, agent: 2 }, default: 0 
+    validates :email, presence: true, uniqueness: true,
+                   format: { with: /\A[a-zA-Z0-9.\-_]+@[a-zA-Z0-9\-.]+\.[a-zA-Z]+\z/,
+                    message: "only allows letters, numbers, dots, hyphens, and underscores" }, if: :will_save_change_to_email?
 
-   validates :email, presence: true, uniqueness: { case_sensitive: false }, 
-      format: { with: URI::MailTo::EMAIL_REGEXP, message: "is not a valid email address" }
+    validates :password, presence: true,
+            format: {
+              with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}\z/,
+              message: "must include uppercase, lowercase, number, and special character"
+            }, if: :will_save_change_to_password_digest?
 
-   validates :password,
-    format: {
-      with: /\A(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}\z/,
-      message: "must include uppercase, lowercase, number, and special character"
-    }
 
-    def set_email
-      self.email = email.downcase
+
+
+   private         
+     
+    def downcase_email
+      self.email = email.downcase 
     end
-  
+
+
+
 end

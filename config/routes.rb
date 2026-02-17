@@ -23,32 +23,42 @@ Rails.application.routes.draw do
       
       post '/users', to: "users#create"
       get '/users', to: "users#index"
-      get '/users/:id', to: "users#show"
-      patch '/users/:id', to: "users#update"
+      get '/my_data', to: "users#show"
+      # patch '/users/:id', to: "users#update"
       patch '/users', to: "users#update"
       delete '/users/:id', to: "users#destroy"
+       patch "/users/:id/assign_role", to: "users#assign_role"
+     
 
-      post '/tickets', to: "tickets#create"
+      post '/createtickets', to: "tickets#create"
       get '/tickets', to: "tickets#index"
       get '/tickets/:id', to: "tickets#show"
+      get '/all_tickets', to: "tickets#all"
       patch '/tickets/:id', to: "tickets#update"
       delete '/tickets/:id', to: "tickets#destroy"
+      
 
-
-
-        
+       patch '/tickets/:id/assigne', to: "tickets#ticket_assigned"
       get '/open', to: "tickets#ticket_open"
       get '/awaiting_approval', to: "tickets#ticket_awaiting_approval"
-      get '/ticket', to: "tickets#ticket_approved"
+      get '/approved', to: "tickets#ticket_approved"
       get '/inprogress', to: "tickets#ticket_in_progress"
       get '/resolved', to: "tickets#ticket_resolved"
       get '/closed', to: "tickets#ticket_closed"
       post '/tickets', to: "tickets#create"
-      
-       
 
-      # resources :users do
-      #    resources :tickets
+      
+
+      get '/unassigned', to: "tickets#unassigned"
+       get '/check_assigned', to: "tickets#check_assigned"
+      patch '/update_status', to: "tickets#update_status"
+      get "/all", to: "tickets#all"
+      get '/my_assigned', to:"tickets#my_assigned"
+      get '/my_tickets', to: "tickets#my_tickets"
+
+
+
+      
 
    
 

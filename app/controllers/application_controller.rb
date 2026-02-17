@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::API
   before_action :authorize_request
+  # include RoleAuthorize
+
 
   private
    

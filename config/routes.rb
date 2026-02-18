@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       
       post '/users', to: "users#create"
       get '/users', to: "users#index"
+      # get '/users/:id', to: "users#"
       get '/my_data', to: "users#show"
       # patch '/users/:id', to: "users#update"
       patch '/users', to: "users#update"

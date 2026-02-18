@@ -1,13 +1,28 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user_name: MyString
-  email: MyString
-  password_digest: MyString
+user:
+  id: 1
+  user_name: hardikpandey
+  email: har@gmail.com
+  password_digest: $2a$12$3Dar7ab15RV4aU7T6MlUY.w/DOSTdYKR21O6UyoxDVkrGA.eR3FF6
+  role: 0
+
+# two:
+#   user_name: MyString
+#   email: MyString
+#   password_digest: MyString
+#   role: 1
+
+admin:
+  id: 2
+  user_name: sagar
+  email: sagar@gmail.com
+  password_digest: $2a$12$gCN6nGNAiy.7LEUs.Cg/tOjsQI9Y2K9KBC/qFH6LJtsCsKAocd4Vm
   role: 1
 
-two:
-  user_name: MyString
-  email: MyString
-  password_digest: MyString
-  role: 1
+agent:
+  id: 3
+  user_name: suraj
+  email: suraj@gmail.com
+  password_digest: $2a$12$gCN6nGNAiy.7LEUs.Cg/tOjsQI9Y2K9KBC/qFH6LJtsCsKAocd4Vm
+  role: 2

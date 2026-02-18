@@ -3,8 +3,8 @@ require "test_helper"
 class TicketTest < ActiveSupport::TestCase
   
 
-  test "new ticket" do
-    ticket : Ticket(:one)
+  # test "new ticket" do
+  #   ticket : Ticket(:one)
 
   #  test "new user" do
   #   user : User(:one)

@@ -1,15 +1,10 @@
 class TicketsController < ApplicationController
   before_action :set_ticket, only: [:show, :update, :destroy]
-  before_action :set_admin, only: [:unassigned, :assigned, :ticket_assigned, :update, :destroy, :ticket_open, :ticket_approved, :ticket_in_progress, :ticket_resolved, :ticket_closed ]
+  before_action :set_admin, only: [:unassigned, :ticket_assigned, :update, :destroy, :ticket_open, :ticket_approved, :ticket_in_progress, :ticket_resolved, :ticket_closed ]
  before_action :set_agent, only: [:my_assigned]
 
   def index
-    if status_param[:status].present?
-      tickets = @current_user.tickets.where(status: status_param[:status])
-      render json: tickets
-    else
-    render json: @current_user.tickets
-   end
+    if @current_user.s
   end
 
 
@@ -19,6 +14,7 @@ class TicketsController < ApplicationController
   end
 
    def create
+    pp "=========================="
     ticket = @current_user.tickets.new(ticket_params) 
     if ticket.save
       render json: {message: "ticket created successfully", ticket: ticket}, status: :created
@@ -48,20 +44,20 @@ class TicketsController < ApplicationController
 
   def ticket_assigned
    unless @current_user.admin?
-     return render json:{ errors:"Admin access only"}, status: :forbidden
+     return render json:{ message:"Admin access only"}, status: :forbidden
    end
 
     ticket = Ticket.find_by(id: params[:id])
-    return render json: { errors: " Ticket not found"}, status: :not_found unless ticket
+    return render json: { message: " Ticket not found"}, status: :not_found unless ticket
   
 
     agent = User.find_by(id: params[:agent_id])
-    return render json: { errors: " agent not  found "}, status: :not_found unless agent
+    return render json: { message: " agent not  found "}, status: :not_found unless agent
 
     if ticket.update(agent_id: params[:agent_id], status: :in_progress)
       render json: { message: "ticket assigned successfully", ticket: ticket}, status: :ok
     else
-      render json: {errors: ticket.errors.full_messages}, status: :unprocessable_entity
+      render json: {message: ticket.errors.full_messages}, status: :unprocessable_entity
     end
  end
 
@@ -116,14 +112,17 @@ class TicketsController < ApplicationController
      render json: tickets
      else
        render json: {errors: "Admin access only"}, status: :forbidden
-     end
+    end
   end
 
   def update_status
       ticket = Ticket.find(params[:id])
 
-      ticket.update(status: params[:status])
+     if ticket.update(status: params[:status])
           render json: ticket
+      else
+       render json: {errors: ticket.errors.full_messages}, status: :forbidden
+     end
   end
 
   def all
@@ -177,8 +176,10 @@ class TicketsController < ApplicationController
   end
    
   def set_admin
-  return render json: {error: "Admin only"}, status: :forbidden unless @current_user.admin?
+  return render json: {message: "Admin only"}, status: :forbidden unless @current_user.admin?
   end
+
+  def
 
   def set_agent
     pp"Agent access only"

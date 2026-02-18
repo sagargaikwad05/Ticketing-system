@@ -10,9 +10,18 @@ class UsersController < ApplicationController
 
   def show
     pp "==============helo============s"
-    pp @current_user
+     pp @current_user
+    if @current_user&.admin?
+      user = User.find_by(params[:id])
+      render json: user
+    else
       render json: @current_user.as_json( except: [:password_digest], )
+    end
+    
   end
+
+
+ 
 
 
 
@@ -31,15 +40,13 @@ class UsersController < ApplicationController
   def assign_role
    if @current_user.admin?
 
-    user = User.find_by(id: params[:id])
+     user = User.find_by(id: params[:id])
 
-    
-      if user.update(set_agent_params)
-
-         render json: { message: "Role updated successfully", user: user }
-    else
-      render json: { error: "User not found" }
-    end
+     if user.update(set_agent_params)
+              render json: { message: "Role updated successfully", user: user }
+      else
+       render json: { error: "User not found" }
+     end
 
    else
     render json: { error: "Admin only" }
@@ -66,23 +73,22 @@ class UsersController < ApplicationController
 
 
  def destroy
-   if @current_user.role == "admin"   # here checlk the user is admin
+   if @current_user.role == "admin"   
 
-    user = User.find_by(id: params[:id])  #then find by id 
+    user = User.find_by(id: params[:id])  
 
     if user
-      if user.is_active  # if the is_active true then  it will update
-        user.update(is_active: false)  # if done 
-        render json: { message: "User deactivated successfully" } #it wil render success fully msg
+      if user.is_active  
+        user.update(is_active: false)   
+        render json: { message: "User deactivated successfully" } 
       else
-        render json: { message: "User already inactive" }  # if the user is false that time it will show 
+        render json: { message: "User already inactive" }  
       end
-    else
-      render json: { error: "User not found" }, status: :not_found  #if the user not found  by _id
+      else
+      render json: { error: "User not found" }, status: :not_found  
     end
-
-  else
-    render json: { error: "Admin access only" }, status: :forbidden  # if the role is not admin  g
+      else
+    render json: { error: "Admin access only" }, status: :forbidden 
   end
  end
 
@@ -91,7 +97,7 @@ class UsersController < ApplicationController
 
   def login
     # user = User.find_by(email: user_params[:email].downcase)
-      user = User.find_by(email: user_params[:email].downcase)
+     user = User.find_by(email: user_params[:email].downcase)
      
     if user&.authenticate(params[:password])
    
@@ -115,9 +121,7 @@ class UsersController < ApplicationController
 
 
   def set_user
-     return if @current_user
-
-    render json: { error: "User not found" }, status: :unprocessable_entity
+        @current_user = User.find(params[:id])
   end
   
   def user_params

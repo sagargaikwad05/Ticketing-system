@@ -15,15 +15,15 @@ class Ticket < ApplicationRecord
   }, default: 0
 
   enum :priority, {
+     low: 0,
     high: 1,
     medium: 2,
-    low: 3
-  }
+  }, default: 0
 
   validates :title, presence: true
   validates :description, presence: true
 
     scope :active_user, ->{where(is_delete: false)}
-    scope :unassigned, ->{where(agent_id: nil)}
+    # scope :unassigned, ->{where(agent_id: nil)}
   
 end
